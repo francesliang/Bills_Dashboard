@@ -1,0 +1,29 @@
+{
+  "name": "billsdashboard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "jquery": "^3.1.1",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "webpack": "^1.14.0",
+    "webpack-bundle-tracker": "^0.2.0"
+  },
+  "dependencies": {
+    "d3": "^4.7.1",
+    "d3-tip": "^0.7.1",
+    "react-d3": "^0.4.0",
+    "react-d3-basic": "^1.6.11",
+    "react-d3-tooltip": "^1.4.14"
+  }
+}
