@@ -1,4 +1,4 @@
-# Bills_Dashboard
+# Bills Dashboard
 
 Set up the working environment with the following steps:
 
