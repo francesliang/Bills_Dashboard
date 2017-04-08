@@ -8,6 +8,9 @@ from dashboard.models import Bills
 
 def default(request):
     return render(request, 'index.html')
+
+def dashboard(request):
+    return render(request, 'dashboard.html')
     
     
 @csrf_exempt

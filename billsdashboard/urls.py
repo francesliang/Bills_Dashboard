@@ -25,5 +25,6 @@ urlpatterns = [
     url(r'^insert_bill', views.insert_bill, name='insert_bill'),   
     url(r'^list_bills', views.list_bills, name='list_bills'), 
     url(r'^get_last_bills', views.get_last_bills, name='get_last_bills'), 
-    url(r'^summarise_bills', views.summarise_bills, name='summarise_bills'), 
+    url(r'^dashboard', views.dashboard, name='dashboard'), 
+    
 ]

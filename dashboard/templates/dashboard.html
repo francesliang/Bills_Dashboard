@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load render_bundle from webpack_loader %}
+
+{% block content %}
+<div class="row">
+	<div class="col-sm-3 col-md-2 sidebar" style="padding-top: 80px;">
+		<ul class="nav nav-sidebar" id="bill_options">
+			{% render_bundle 'main' %}
+		</ul>
+
+		<ul class="nav nav-sidebar">
+			<li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+			<li><a href="#">History</a></li>
+			<li><a href="#">Export</a></li>
+		</ul>
+        
+	</div>
+
+</div>
+
+{% endblock %}
