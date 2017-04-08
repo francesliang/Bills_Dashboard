@@ -30,22 +30,6 @@ def insert_bill(request):
     print "insert_bill ", bill_name, due_date, amount
 
     return HttpResponse(json.dumps({'success': success}), content_type="application/json")
-
-@csrf_exempt
-def get_bills(request):
-    params = request.GET
-    bills = list(Bills.objects.all().values_list('name', flat=True))
-    data = dict()
-    for b in bills:
-    	dates = list(Bills.objects.filter(name=b).values_list('due_date', flat=True))
-        dates = [d.strftime('%m-%d-%Y') for d in dates]
-    	amounts = list(Bills.objects.filter(name=b).values_list('amount', flat=True))
-    	data[b] = {
-    		"due_dates": dates,
-    		"amounts": amounts
-    	}
-
-    return HttpResponse(json.dumps(data), content_type ="application/json")
      
 @csrf_exempt
 def list_bills(request):
@@ -68,12 +52,21 @@ def get_last_bills(request):
     print data
     return HttpResponse(json.dumps(data), content_type ="application/json")
     
-
 @csrf_exempt
-def summarise_bills(request):
+def get_bill_detail(request):
+    params = request.GET
+    bills = list(Bills.objects.all().values_list('name', flat=True))
+    data = dict()
+    for b in bills:
+        dates = list(Bills.objects.filter(name=b).values_list('due_date', flat=True))
+        dates = [d.strftime('%m-%d-%Y') for d in dates]
+        amounts = list(Bills.objects.filter(name=b).values_list('amount', flat=True))
+        data[b] = {
+            "due_dates": dates,
+            "amounts": amounts
+        }
 
-    return
-
+    return HttpResponse(json.dumps(data), content_type ="application/json")
 
 
 
