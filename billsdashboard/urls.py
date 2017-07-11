@@ -21,10 +21,10 @@ from dashboard import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.default, name='default'),
-    url(r'^get_bill_detail', views.get_bill_detail, name='get_bill_detail'),
+    #url(r'^get_bill_detail', views.get_bill_detail, name='get_bill_detail'),
     url(r'^insert_bill', views.insert_bill, name='insert_bill'),   
     url(r'^list_bills', views.list_bills, name='list_bills'), 
     url(r'^get_last_bills', views.get_last_bills, name='get_last_bills'), 
-    url(r'^dashboard', views.dashboard, name='dashboard'), 
-    
+    url(r'^dashboard', views.dashboard, name='dashboard'),
+    url(r'^get_bill_overview', views.get_bill_overview, name='get_bill_overview'),
 ]

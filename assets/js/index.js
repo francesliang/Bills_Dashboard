@@ -83,7 +83,7 @@ var BillForm = React.createClass({
 		}
 
 		if (this.state.showInputBill) {
-			inputBill = <input name="bill_name" type="text" id="inputBill" className="form-control" placeholder="Bill name"			value={this.state.name} onChange={this.handleInputChange} required="" autoFocus=""/>
+			inputBill = <input name="bill_name" type="text" id="inputBill" className="form-control" placeholder="Bill name"	value={this.state.name} onChange={this.handleInputChange} required="" autoFocus=""/>
 		}
 
 		return (
@@ -182,45 +182,10 @@ var LastBillBarChart = React.createClass ({
 
 })
 
-var BillsList = React.createClass ({
-	loadBillsFromServer: function() {
-		$.ajax({
-			url: this.props.url,
-			datatype: 'json',
-			cach: false,
-			success: function(data) {
-				this.setState({data: data});
-			}.bind(this)
-		})
-	},
-	getInitialState: function(){
-		return {data: []}
-	},
 
-	componentDidMount: function() {
-		this.loadBillsFromServer();
-		//setInterval(this.loadBillsFromServer, this.props.pollInterval)
-	},
-
-	render: function() {
-		if (this.state.data) {
-			var bills = this.state.data;
-			var billlist = Object.keys(bills).map(function(k, i){
-				return <li key={i}> {k}: ${bills[k].amounts}; due at {bills[k].due_dates}</li>
-			})
-		}
-		return (
-			<div>
-				<ul>
-					{billlist}
-				</ul>
-			</div>
-		)
-	}
-})
 
 ReactDOM.render(<BillForm postUrl='/insert_bill/' loadUrl='/list_bills/'/>, document.getElementById('billform'))
 ReactDOM.render(<LastBillBarChart url='/get_last_bills/' />, document.getElementById('billdash'))
 
-//ReactDOM.render(<BillsList url='/get_bills/' />, document.getElementById('billdash'))
+
 

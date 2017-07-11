@@ -53,18 +53,22 @@ def get_last_bills(request):
     return HttpResponse(json.dumps(data), content_type ="application/json")
     
 @csrf_exempt
-def get_bill_detail(request):
+def get_bill_overview(request):
     params = request.GET
-    bills = list(Bills.objects.all().values_list('name', flat=True))
-    data = dict()
-    for b in bills:
-        dates = list(Bills.objects.filter(name=b).values_list('due_date', flat=True))
-        dates = [d.strftime('%m-%d-%Y') for d in dates]
-        amounts = list(Bills.objects.filter(name=b).values_list('amount', flat=True))
-        data[b] = {
-            "due_dates": dates,
-            "amounts": amounts
-        }
+    bill_name = params.get('bill_name')
+    n_records = 12
+    last_year = Bills.objects.filter(name=bill_name).order_by('-due_date')
+    if len(last_year) > n_records:
+        last_year = last_year[:n_records]
+    details = reversed(last_year)
+
+    dates = list(details.values_list('due_date', flat=True))
+    dates = [d.strftime('%m-%d-%Y') for d in dates]
+    amounts = list(details.values_list('amount', flat=True))
+    data = {
+        "due_dates": dates,
+        "amounts": amounts
+    }
 
     return HttpResponse(json.dumps(data), content_type ="application/json")
 
