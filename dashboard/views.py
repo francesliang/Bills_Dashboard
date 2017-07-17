@@ -47,10 +47,11 @@ def get_last_bills(request):
             last_b = Bills.objects.filter(name=b).order_by('-due_date')[0]
             data[b] = {
                 'amount': last_b.amount,
-                'due_date': last_b.due_date.strftime('%d-%m-%Y')
+                'due_date': last_b.due_date.strftime('%Y-%m-%d')
             }
-    print data
-    return HttpResponse(json.dumps(data), content_type ="application/json")
+
+    print 'last bills', data
+    return HttpResponse(json.dumps(data), content_type="application/json")
     
 @csrf_exempt
 def get_bill_overview(request):
@@ -60,17 +61,51 @@ def get_bill_overview(request):
     last_year = Bills.objects.filter(name=bill_name).order_by('-due_date')
     if len(last_year) > n_records:
         last_year = last_year[:n_records]
-    details = reversed(last_year)
+    details = last_year.reverse()
 
     dates = list(details.values_list('due_date', flat=True))
-    dates = [d.strftime('%m-%d-%Y') for d in dates]
+    dates = [d.strftime('%Y-%m-%d') for d in dates]
     amounts = list(details.values_list('amount', flat=True))
     data = {
         "due_dates": dates,
         "amounts": amounts
     }
+    print 'bill overview', data
 
-    return HttpResponse(json.dumps(data), content_type ="application/json")
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
+@csrf_exempt
+def get_bill_history(request):
+    params = request.GET
+    bill_name = params.get('bill_name')
+    from_date = params.get('from_date', None)
+    to_date = params.get('to_date', None)
+
+    history = None
+    if from_date is not None:
+        if to_date is not None:
+            history = Bills.objects.filter(name=bill_name, due_date__gte=from_date, due_date__lte=to_date) \
+                .order_by('due_date')
+        else:
+            history = Bills.objects.filter(name=bill_name, due_date__gte=from_date).order_by('due_date')
+
+    if to_date is not None and history is None:
+        history = Bills.objects.filter(name=bill_name, due_date__lte=to_date)
+
+    if history is None:
+        history = Bills.objects.filter(name=bill_name)
+
+    dates = [d.strftime('%Y-%m-%d') for d in list(history.values_list('due_date', flat=True))]
+    amounts = list(history.values_list('amount', flat=True))
+    data = {
+        "due_dates": dates,
+        "amounts": amounts
+    }
+
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
+
+
 
 
 

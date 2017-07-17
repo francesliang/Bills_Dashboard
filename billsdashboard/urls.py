@@ -27,4 +27,5 @@ urlpatterns = [
     url(r'^get_last_bills', views.get_last_bills, name='get_last_bills'), 
     url(r'^dashboard', views.dashboard, name='dashboard'),
     url(r'^get_bill_overview', views.get_bill_overview, name='get_bill_overview'),
+    url(r'^get_bill_history', views.get_bill_history, name='get_bill_history'),
 ]

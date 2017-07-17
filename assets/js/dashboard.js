@@ -68,7 +68,10 @@ var BillSelect = React.createClass({
 var BillOverview = React.createClass({
     getDefaultProps: function() {
 		return {
-			bill_name: 'Electricity'
+			bill_name: 'Electricity',
+			width: 500,
+			height: 300,
+			chartId: 'billoverview'
 		}
 	},
 
@@ -91,7 +94,10 @@ var BillOverview = React.createClass({
 
 	getInitialState: function(){
 		this.state = {
-			data: {},
+			data: {
+                due_dates: [],
+                amounts: []
+			},
 			tooltip: null
 		};
 		return this.state;
@@ -103,16 +109,17 @@ var BillOverview = React.createClass({
 	},
 
 	buildBarData: function(){
-		console.log('state', this.state)
 		var data = this.state.data;
-		var bData = data.due_dates.map(function(d,i){
-			return {name: d, value: data.amounts[k], note: ''}
-		})
+        bData = data.due_dates.map(function(d,i){
+            return {name: d, value: data.amounts[i], note: ''}
+        });
+
 		return bData;
 	},
 
 	render: function() {
 		var data = this.buildBarData();
+        console.log('bData', data);
 		return(
 				<BarChart
 					height={this.props.height}
@@ -125,9 +132,90 @@ var BillOverview = React.createClass({
 	}
 });
 
+var BillHistory = React.createClass({
+    getDefaultProps: function() {
+		return {
+			bill_name: 'Electricity',
+			chartId: 'billhistory'
+		}
+	},
+
+    loadHistoryFromServer: function() {
+		console.log('loadHistoryFromServer');
+		$.ajax({
+			url: this.props.url,
+			datatype: 'json',
+			cach: false,
+			data: {'bill_name': this.props.bill_name},
+			success: function(data) {
+				this.setState({data: data});
+			}.bind(this),
+			error: function(request, status, error) {
+				console.log(request.responseText, error);
+				alert(request.responseText);
+			}
+		})
+	},
+
+	getInitialState: function(){
+		this.state = {
+			data: {
+                due_dates: [],
+                amounts: []
+			},
+			tooltip: null
+		};
+		return this.state;
+	},
+
+	componentDidMount: function() {
+		console.log('componentDidMount');
+		this.loadHistoryFromServer();
+	},
+
+	buildTableData: function() {
+		var data = this.state.data;
+        var tData = data.due_dates.map(function(d,i){
+            return <CustomRow No={i} DueDate={d} Amount={data.amounts[i]}/>
+        });
+
+		return tData;
+	},
+
+    render: function() {
+	    var rows = buildTableData();
+	    return (
+            <table>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Due Date</th>
+                        <th>Amount($AUD)</th>
+                    </tr>
+                </thead>
+                <tbody>{rows}</tbody>
+            </table>
+      );
+    }
+
+});
+
+var CustomRow = React.createClass({
+    render: function() {
+        return (
+            <tr>
+                <td>{this.props.No}</td>
+                <td>{this.props.DueDate}</td>
+                <td>{this.props.Amount}</td>
+            </tr>
+        );
+    }
+});
+
 
 ReactDOM.render(<BillSelect loadUrl='/list_bills/'/>, document.getElementById('bill_select'))
 ReactDOM.render(<BillOverview url='/get_bill_overview/'/>, document.getElementById('billoverview'))
+ReactDOM.render(<BillHistory url='/get_bill_history/'/>, document.getElementById('billhistory'))
 
 
 
