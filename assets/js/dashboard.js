@@ -65,9 +65,16 @@ var BillSelect = React.createClass({
 
 });
 
-//var SideBar = React.createClass({
-//
-//});
+var SideBar = React.createClass({
+    render: function() {
+        return (
+            <div>
+                <SideItem name='Overview' />
+                <SideItem name='History' />
+			</div>
+        )
+    }
+});
 
 var SideItem = React.createClass({
     getInitialState: function() {
@@ -89,7 +96,7 @@ var SideItem = React.createClass({
             itemClass = "active";
         }
         return (
-            <li onClick={this.handleClick} class={itemClass}>{this.props.name}</li>
+            <li class={itemClass}><a href="#" onClick={this.handleClick}>{this.props.name}</a></li>
         )
 
     }
@@ -254,6 +261,6 @@ var tableStyle = {
 ReactDOM.render(<BillSelect loadUrl='/list_bills/'/>, document.getElementById('bill_select'))
 ReactDOM.render(<BillOverview url='/get_bill_overview/'/>, document.getElementById('billoverview'))
 ReactDOM.render(<BillHistory url='/get_bill_history/'/>, document.getElementById('billhistory'))
-
+ReactDOM.render(<SideBar/>, document.getElementById('sidebar'))
 
 
