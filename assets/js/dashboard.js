@@ -65,6 +65,36 @@ var BillSelect = React.createClass({
 
 });
 
+//var SideBar = React.createClass({
+//
+//});
+
+var SideItem = React.createClass({
+    getInitialState: function() {
+        return {
+            isSelected:false
+        }
+    },
+
+    handleClick: function() {
+        this.setState({
+            isSelected: true
+        })
+    },
+
+    render: function(){
+        var isSelected = this.state.isSelected;
+        var itemClass = "";
+        if (isSelected) {
+            itemClass = "active";
+        }
+        return (
+            <li onClick={this.handleClick} class={itemClass}>{this.props.name}</li>
+        )
+
+    }
+});
+
 var BillOverview = React.createClass({
     getDefaultProps: function() {
 		return {
@@ -176,25 +206,29 @@ var BillHistory = React.createClass({
 	buildTableData: function() {
 		var data = this.state.data;
         var tData = data.due_dates.map(function(d,i){
-            return <CustomRow No={i} DueDate={d} Amount={data.amounts[i]}/>
+            return <CustomRow key={i} No={i+1} DueDate={d} Amount={data.amounts[i]}/>
         });
 
 		return tData;
 	},
 
     render: function() {
-	    var rows = buildTableData();
+	    var rows = this.buildTableData();
+	    console.log('rows', rows);
 	    return (
-            <table>
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Due Date</th>
-                        <th>Amount($AUD)</th>
-                    </tr>
-                </thead>
-                <tbody>{rows}</tbody>
-            </table>
+
+	        <div>
+                <table style={tableStyle}>
+                    <thead>
+                        <tr style={tableStyle}>
+                            <th style={tableStyle}>No.</th>
+                            <th style={tableStyle} >Due Date</th>
+                            <th style={tableStyle}>Amount($AUD)</th>
+                        </tr>
+                    </thead>
+                    <tbody>{rows}</tbody>
+                </table>
+            </div>
       );
     }
 
@@ -203,15 +237,19 @@ var BillHistory = React.createClass({
 var CustomRow = React.createClass({
     render: function() {
         return (
-            <tr>
-                <td>{this.props.No}</td>
-                <td>{this.props.DueDate}</td>
-                <td>{this.props.Amount}</td>
+            <tr style={tableStyle}>
+                <td style={tableStyle}>{this.props.No}</td>
+                <td style={tableStyle}>{this.props.DueDate}</td>
+                <td style={tableStyle}>{this.props.Amount}</td>
             </tr>
         );
     }
 });
 
+var tableStyle = {
+    border: '1px solid rgba(0,0,0,0.08)',
+    padding: '6px 13px',
+};
 
 ReactDOM.render(<BillSelect loadUrl='/list_bills/'/>, document.getElementById('bill_select'))
 ReactDOM.render(<BillOverview url='/get_bill_overview/'/>, document.getElementById('billoverview'))

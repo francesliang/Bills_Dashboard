@@ -4,13 +4,14 @@
 {% block content %}
 <div class="row">
 	<div class="col-sm-3 col-md-2 sidebar" style="padding-top: 80px;height: 100%; width:200px">
-		<ul class="nav nav-sidebar" id="bill_select">
+		<ul class="nav nav-sidebar" id="bill_select" style="padding-bottom:10px">
 			{% render_bundle 'dashboard' %}
 		</ul>
-		<ul class="nav nav-sidebar">
+		<ul id="sidebar" class="nav nav-sidebar">
 			<li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
 			<li><a href="#">History</a></li>
 			<li><a href="#">Export</a></li>
+			{% render_bundle 'dashboard' %}
 		</ul>
         
 	</div>
@@ -28,7 +29,7 @@
 		</div>
 	</div>
 
-	<div id="History" class='col-sm-9'  style="padding-top: 80px;">
+	<div id="history" class='col-sm-9'  style="padding-top: 80px;">
 		<div class='panel panel-info'>
 			<div class="panel-heading">
 				<h3 class="panel-title">History</h3>
