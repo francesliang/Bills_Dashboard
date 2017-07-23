@@ -12,8 +12,14 @@
 			<div class="panel-heading"> 
 				<h3 class="panel-title">Bills Dashboard</h3>
 			</div>
-			<div class="panel-body" id='billdash'> 
-			{% render_bundle 'main' %}
+			<div class="panel-body">
+				<div id="billpie">
+					{% render_bundle 'main' %}
+				</div>
+				<div id="billbar">
+					{% render_bundle 'main' %}
+				</div>
+
 			</div>
 			
 		</div>

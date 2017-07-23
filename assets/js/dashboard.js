@@ -63,10 +63,6 @@ var BillSelect = React.createClass({
 			})
 		}
 
-		if (this.state.showInputBill) {
-			inputBill = <input name="bill_name" type="text" id="inputBill" className="form-control" placeholder="Bill name"	value={this.state.name} onChange={this.handleInputChange} required="" autoFocus=""/>
-		}
-
 		return (
 
 			<select name="bill_name" className="form-control" id="billList" style={{width:'85%', display:'inline'}}
@@ -123,7 +119,7 @@ var BillOverview = React.createClass({
     getDefaultProps: function() {
 		return {
 			bill_name: '',
-			width: 500,
+			width: 600,
 			height: 300,
 			chartId: 'billoverview'
 		}

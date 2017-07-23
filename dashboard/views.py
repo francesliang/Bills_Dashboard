@@ -52,7 +52,20 @@ def get_last_bills(request):
 
     print 'last bills', data
     return HttpResponse(json.dumps(data), content_type="application/json")
-    
+
+@csrf_exempt
+def get_bills_summary(request):
+    data = dict()
+    bills = list(Bills.objects.all().values_list('name', flat=True))
+    total = sum(list(Bills.objects.all().values_list('amount', flat=True)))
+    for b in bills:
+        bill = Bills.objects.filter(name=b)
+        percent = sum(bill.values_list('amount', flat=True))/float(total) * 100
+        data[b] = round(percent, 1)
+
+    print 'bills summary', data
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
 @csrf_exempt
 def get_bill_overview(request):
     params = request.GET

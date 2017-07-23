@@ -4,6 +4,7 @@ var ReactDOM = require('react-dom');
 var d3 = require("d3");
 
 var BarChart = require('./BarChart');
+var PieChart = require('./PieChart');
 
 var BillForm = React.createClass({
 
@@ -100,7 +101,7 @@ var BillForm = React.createClass({
 			<br></br><br></br>
 
 			{inputBill}
-			
+			<br></br>
 
 			<input name="due_date" type="date" id="dueDate" className="form-control" placeholder="Due date" 
 			value={this.state.name} onChange={this.handleInputChange} required="" autoFocus=""/>
@@ -121,9 +122,9 @@ var BillForm = React.createClass({
 var LastBillBarChart = React.createClass ({
 	getDefaultProps: function() {
 		return {
-			width: 500,
-			height: 300,
-			chartId: 'billdash'
+			width: 600,
+			height: 400,
+			chartId: 'billbar'
 		}
 	},
 
@@ -183,9 +184,72 @@ var LastBillBarChart = React.createClass ({
 })
 
 
+var SummaryPieChart = React.createClass ({
+	getDefaultProps: function() {
+		return {
+			width: 600,
+			height: 480,
+			chartId: 'billpie'
+		}
+	},
+
+	loadBillsFromServer: function() {
+		console.log('loadBillsFromServer');
+		$.ajax({
+			url: this.props.url,
+			datatype: 'json',
+			cach: false,
+			success: function(data) {
+				this.setState({data: data});
+			}.bind(this),
+			error: function(request, status, error) {
+				console.log(request.responseText, error);
+				alert(request.responseText);
+			}
+		})
+	},
+
+	getInitialState: function(){
+		this.state = {
+			data: {},
+			tooltip: null
+		};
+
+		return this.state;
+	},
+
+	componentDidMount: function() {
+		console.log('componentDidMount');
+		this.loadBillsFromServer();
+	},
+
+	buildChartData: function(){
+		console.log('state', this.state)
+		var data = this.state.data;
+		var bData = Object.keys(data).map(function(k,i){
+			return {key: i, name: k, value: data[k]}
+		})
+		return bData;
+	},
+
+	render: function() {
+		var data = this.buildChartData();
+		console.log('pie chart data', data);
+		return(
+
+				<PieChart
+					height={this.props.height}
+					width={this.props.width}
+					chartId={this.props.chartId}
+					data={data}
+				/>
+		)
+	}
+
+})
+
 
 ReactDOM.render(<BillForm postUrl='/insert_bill/' loadUrl='/list_bills/'/>, document.getElementById('billform'))
-ReactDOM.render(<LastBillBarChart url='/get_last_bills/' />, document.getElementById('billdash'))
-
-
+ReactDOM.render(<LastBillBarChart url='/get_last_bills/' />, document.getElementById('billbar'))
+ReactDOM.render(<SummaryPieChart url='/get_bills_summary/' />, document.getElementById('billpie'))
 
