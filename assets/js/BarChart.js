@@ -29,6 +29,11 @@ var BarChart=React.createClass({
         var height = this.props.height;
     	var margin = {top: 40, right: 40, bottom: 30, left: 40};
 
+		var svg = d3.select('#'+this.props.chartId + ' svg');
+		if ( !svg.empty() ){
+		    svg.remove();
+		}
+
 		var svg = d3.select('#'+this.props.chartId).append('svg')
 			.attr('class', 'd3')
 			.attr('width', width + margin.left + margin.right)

@@ -35,11 +35,24 @@ var BillSelect = React.createClass({
 		const name = target.name;
 		const value = target.value;
 
+        console.log('bill name', value);
+
+		var bill_overview = (
+		    <BillOverview bill_name={value} url='/get_bill_overview/' />
+		)
+
+		var bill_history = (
+		    <BillHistory bill_name={value} url='/get_bill_history/' />
+		)
+
+        ReactDOM.render(bill_overview, document.getElementById('billoverview'))
+        ReactDOM.render(bill_history, document.getElementById('billhistory'))
+
 		this.setState({
 			[name]: value
 		});
 
-		console.log('input', this.state)
+
 	},
 
 	render: function() {
@@ -55,11 +68,15 @@ var BillSelect = React.createClass({
 		}
 
 		return (
-			<select name="bill_name" className="form-control" id="billList" style={{width:'85%', display:'inline'}} 
+
+			<select name="bill_name" className="form-control" id="billList" style={{width:'85%', display:'inline'}}
 				onChange={this.handleInputChange} value={this.state.value} required="" autoFocus="">
-					<option defaultValue="" disabled selected>Select your bill</option>
+					<option disabled selected>Select your bill</option>
 					{billList}
 			</select>
+
+
+
 		)
 	}
 
@@ -96,7 +113,7 @@ var SideItem = React.createClass({
             itemClass = "active";
         }
         return (
-            <li class={itemClass}><a href="#" onClick={this.handleClick}>{this.props.name}</a></li>
+            <li className={itemClass}><a href="#" onClick={this.handleClick}>{this.props.name}</a></li>
         )
 
     }
@@ -105,7 +122,7 @@ var SideItem = React.createClass({
 var BillOverview = React.createClass({
     getDefaultProps: function() {
 		return {
-			bill_name: 'Electricity',
+			bill_name: '',
 			width: 500,
 			height: 300,
 			chartId: 'billoverview'
@@ -140,8 +157,15 @@ var BillOverview = React.createClass({
 		return this.state;
 	},
 
-	componentDidMount: function() {
-		console.log('componentDidMount');
+	componentDidUpdate: function(prevProps, prevState) {
+	    if (prevProps.bill_name !== this.props.bill_name || !prevProps.bill_name) {
+		    console.log('componentDidUpdate');
+		    this.loadOverviewFromServer();
+		}
+	},
+
+	componentDidMount: function(){
+	    console.log('componentDidMount');
 		this.loadOverviewFromServer();
 	},
 
@@ -172,7 +196,7 @@ var BillOverview = React.createClass({
 var BillHistory = React.createClass({
     getDefaultProps: function() {
 		return {
-			bill_name: 'Electricity',
+			bill_name: '',
 			chartId: 'billhistory'
 		}
 	},
@@ -205,8 +229,15 @@ var BillHistory = React.createClass({
 		return this.state;
 	},
 
-	componentDidMount: function() {
-		console.log('componentDidMount');
+	componentDidUpdate: function(prevProps, prevState) {
+	    if (prevProps.bill_name !== this.props.bill_name || !prevProps.bill_name) {
+	        console.log('componentDidUpdate');
+		    this.loadHistoryFromServer();
+	    }
+	},
+
+	componentDidMount: function(){
+	    console.log('componentDidMount');
 		this.loadHistoryFromServer();
 	},
 
@@ -259,8 +290,6 @@ var tableStyle = {
 };
 
 ReactDOM.render(<BillSelect loadUrl='/list_bills/'/>, document.getElementById('bill_select'))
-ReactDOM.render(<BillOverview url='/get_bill_overview/'/>, document.getElementById('billoverview'))
-ReactDOM.render(<BillHistory url='/get_bill_history/'/>, document.getElementById('billhistory'))
 ReactDOM.render(<SideBar/>, document.getElementById('sidebar'))
 
 
