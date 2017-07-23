@@ -13,7 +13,8 @@ var BarChart=React.createClass({
             data: undefined,
             chartId: 'chart',
             yaxis: 'y',
-            barColor: 'steelblue'
+            barColor: 'steelblue',
+            title: ''
         };
     },
 
@@ -82,6 +83,16 @@ var BarChart=React.createClass({
 		   	.attr("dy", ".71em")
 		   	.style("text-anchor", "end")
 		   	.text(this.props.yaxis);
+
+		if (this.props.title) {
+		    svg.append("text")
+                .attr("x", (width / 2))
+                .attr("y", 0 - (margin.top / 2))
+                .attr("text-anchor", "middle")
+                .style("font-size", "16px")
+                .style("text-decoration", "bold")
+                .text(this.props.title);
+		}
 
 		svg.selectAll('.bar')
 			.data(data)

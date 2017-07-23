@@ -172,7 +172,7 @@ var BillOverview = React.createClass({
 	buildBarData: function(){
 		var data = this.state.data;
         bData = data.due_dates.map(function(d,i){
-            return {name: d, value: data.amounts[i], note: ''}
+            return {name: d, value: data.amounts[i], note: d}
         });
 
 		return bData;
@@ -188,6 +188,7 @@ var BillOverview = React.createClass({
 					chartId={this.props.chartId}
 					yaxis='Amount($AUD)'
 					data={data}
+					title={this.props.bill_name}
 				/>
 		)
 	}

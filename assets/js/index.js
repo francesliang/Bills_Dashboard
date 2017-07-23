@@ -51,7 +51,7 @@ var BillForm = React.createClass({
 
 	handleSubmit: function(event) {
 		alert('A bill was submitted: ' + this.state.bill_name);
-		event.preventDefault();
+		//event.preventDefault();
 		$.ajax({
 			url: this.props.postUrl,
 			datatype: 'json',
