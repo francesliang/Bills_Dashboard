@@ -11,10 +11,11 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import json
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -26,6 +27,8 @@ SECRET_KEY = 'm)0-#o#3$ys%9v4rs(ivq8ai!vmhrd565zr7$bz!2scl4*kg_h'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+CONFIG = json.load(open(os.path.join(THIS_DIR, 'config.json'), 'r'))
 
 
 # Application definition
@@ -40,6 +43,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'dashboard.apps.DashboardConfig',
     'webpack_loader',
+    'django_celery_beat',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -108,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Australia/Brisbane'
 
 USE_I18N = True
 
@@ -136,5 +141,5 @@ WEBPACK_LOADER = {
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'bills.dashboard@gmail.com'
-EMAIL_HOST_PASSWORD = 'password'
+EMAIL_HOST_USER = CONFIG.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = CONFIG.get('EMAIL_HOST_PASSWORD', '')

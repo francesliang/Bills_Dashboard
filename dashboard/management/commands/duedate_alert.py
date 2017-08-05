@@ -10,7 +10,7 @@ def check_duedate(to_email_list, bill_name=None, alert_days=3):
     today = datetime.today()
 
     msg_base = "Bill %s is due on %s."
-    from_email = "bills.dashboard@gmail.com"
+    from_email = ""
 
     if bill_name is None:
         bills = Bills.objects.all().values_list('name', flat=True)
