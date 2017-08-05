@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import os
 import json
 
+import django
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -143,3 +145,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = CONFIG.get('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = CONFIG.get('EMAIL_HOST_PASSWORD', '')
+
+django.setup()
