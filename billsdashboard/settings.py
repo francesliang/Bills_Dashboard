@@ -30,6 +30,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LOGIN_REDIRECT_URL = "/"
+
 CONFIG = json.load(open(os.path.join(THIS_DIR, 'config.json'), 'r'))
 
 

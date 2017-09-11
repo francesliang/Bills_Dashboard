@@ -1,17 +1,19 @@
 import json
 
 from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from django.http import HttpResponse
 
 from dashboard.models import Bills 
 
 def default(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect("/login")
+
     return render(request, 'index.html')
 
 def dashboard(request):
     return render(request, 'dashboard.html')
-    
     
 @csrf_exempt
 def insert_bill(request):
