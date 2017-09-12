@@ -14,6 +14,7 @@ var BillForm = React.createClass({
 		$.ajax({
 			url: this.props.loadUrl,
 			datatype: 'json',
+			data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
 			cach: false,
 			success: function(data) {
 				this.setState({existing_bills: data});
@@ -56,6 +57,7 @@ var BillForm = React.createClass({
 		$.ajax({
 			url: this.props.postUrl,
 			datatype: 'json',
+			data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
 			type: 'POST',
 			data: this.state,
 			cach: false,
@@ -133,6 +135,7 @@ var LastBillBarChart = React.createClass ({
 		$.ajax({
 			url: this.props.url,
 			datatype: 'json',
+			data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
 			cach: false,
 			success: function(data) {
 				this.setState({data: data});
@@ -198,6 +201,7 @@ var SummaryPieChart = React.createClass ({
 		$.ajax({
 			url: this.props.url,
 			datatype: 'json',
+			data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
 			cach: false,
 			success: function(data) {
 				this.setState({data: data});

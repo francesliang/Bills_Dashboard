@@ -10,6 +10,7 @@ var BillSelect = React.createClass({
 		$.ajax({
 			url: this.props.loadUrl,
 			datatype: 'json',
+			data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
 			cach: false,
 			success: function(data) {
 				this.setState({existing_bills: data});
@@ -131,7 +132,7 @@ var BillOverview = React.createClass({
 			url: this.props.url,
 			datatype: 'json',
 			cach: false,
-			data: {'bill_name': this.props.bill_name},
+			data: {'bill_name': this.props.bill_name, csrfmiddlewaretoken: '{{ csrf_token }}'},
 			success: function(data) {
 				this.setState({data: data});
 			}.bind(this),
@@ -204,7 +205,7 @@ var BillHistory = React.createClass({
 			url: this.props.url,
 			datatype: 'json',
 			cach: false,
-			data: {'bill_name': this.props.bill_name},
+			data: {'bill_name': this.props.bill_name, csrfmiddlewaretoken: '{{ csrf_token }}'},
 			success: function(data) {
 				this.setState({data: data});
 			}.bind(this),

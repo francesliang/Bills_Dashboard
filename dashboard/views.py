@@ -1,6 +1,7 @@
 import json
 
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 
@@ -17,10 +18,9 @@ def dashboard(request):
         return HttpResponseRedirect("/login")
 
     return render(request, 'dashboard.html')
-    
-@csrf_exempt
+
+@login_required
 def insert_bill(request):
-    success = False
     params = request.POST
     created_date = params.get('created_date')
     bill_name = params.get('bill_name')
@@ -35,16 +35,16 @@ def insert_bill(request):
         amount=amount)
     print "insert_bill ", bill_name, due_date, amount
 
-    return HttpResponse(json.dumps({'success': success}), content_type="application/json")
-     
-@csrf_exempt
+    return HttpResponse(json.dumps({'success': is_created}), content_type="application/json")
+
+@login_required
 def list_bills(request):
     bills = list(Bills.objects.filter(owner=request.user).values_list('name', flat=True))
     bills = list(set(bills))
 
     return HttpResponse(json.dumps(bills), content_type="application/json")
 
-@csrf_exempt
+@login_required
 def get_last_bills(request):
     data = dict()
     bills = list(Bills.objects.filter(owner=request.user).values_list('name', flat=True))
@@ -59,7 +59,7 @@ def get_last_bills(request):
     print 'last bills', data
     return HttpResponse(json.dumps(data), content_type="application/json")
 
-@csrf_exempt
+@login_required
 def get_bills_summary(request):
     data = dict()
     bills = list(Bills.objects.filter(owner=request.user).values_list('name', flat=True))
@@ -72,7 +72,7 @@ def get_bills_summary(request):
     print 'bills summary', data
     return HttpResponse(json.dumps(data), content_type="application/json")
 
-@csrf_exempt
+@login_required
 def get_bill_overview(request):
     params = request.GET
     bill_name = params.get('bill_name')
@@ -93,7 +93,7 @@ def get_bill_overview(request):
 
     return HttpResponse(json.dumps(data), content_type="application/json")
 
-@csrf_exempt
+@login_required
 def get_bill_history(request):
     params = request.GET
     bill_name = params.get('bill_name')
