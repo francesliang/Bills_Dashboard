@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div style="padding-top: 80px;">
+
+{% if form.errors %}
+<p>Error: {{ form.errors }}</p>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+{% endif %}
+
+<form method="post" action="">
+    {% csrf_token %}
+    {{ form.as_p}}
+
+    <input type="submit" value="Register" />
+    <input type="hidden" name="next" value="{{ next }}" />
+</form>
+
+</div>
+
+{% endblock %}

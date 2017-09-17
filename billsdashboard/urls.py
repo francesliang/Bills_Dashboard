@@ -16,11 +16,15 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from registration.backends.simple.views import RegistrationView
 
+from dashboard.forms import BillsRegistrationForm
 from dashboard import views
 
 urlpatterns = [
     url(r'^', include('django.contrib.auth.urls')),
+    url(r'^register/$', RegistrationView.as_view(form_class=BillsRegistrationForm), name='registration_register'),
+    url(r'^', include('registration.backends.simple.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.default, name='default'),
     #url(r'^get_bill_detail', views.get_bill_detail, name='get_bill_detail'),
