@@ -1,5 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var DjangoCSRFToken = require('django-react-csrftoken')
 //var LinkedStateMixin = require('react-addons-linked-state-mixin')
 var d3 = require("d3");
 
@@ -14,7 +15,6 @@ var BillForm = React.createClass({
 		$.ajax({
 			url: this.props.loadUrl,
 			datatype: 'json',
-			data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
 			cach: false,
 			success: function(data) {
 				this.setState({existing_bills: data});
@@ -53,13 +53,14 @@ var BillForm = React.createClass({
 
 	handleSubmit: function(event) {
 		alert('A bill was submitted: ' + this.state.bill_name);
+		var post_data = this.state;
+		past_data.csrfmiddlewaretoken = DjangoCSRFToken;
 		//event.preventDefault();
 		$.ajax({
 			url: this.props.postUrl,
 			datatype: 'json',
-			data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
 			type: 'POST',
-			data: this.state,
+			data: post_data,
 			cach: false,
 			success: function(data) {
 				console.log('submit succeeded', data);
@@ -91,8 +92,7 @@ var BillForm = React.createClass({
 
 		return (
 			<form onSubmit={this.handleSubmit}>
-			
-			<select name="bill_name" className="form-control" id="billList" style={{width:'85%', display:'inline'}} 
+			<select name="bill_name" className="form-control" id="billList" style={{width:'85%', display:'inline'}}
 			onChange={this.handleInputChange} value={this.state.value} required="" autoFocus="">
 				<option defaultValue="" disabled selected>Select your bill</option>
 				{billList}
@@ -135,7 +135,6 @@ var LastBillBarChart = React.createClass ({
 		$.ajax({
 			url: this.props.url,
 			datatype: 'json',
-			data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
 			cach: false,
 			success: function(data) {
 				this.setState({data: data});
@@ -201,7 +200,6 @@ var SummaryPieChart = React.createClass ({
 		$.ajax({
 			url: this.props.url,
 			datatype: 'json',
-			data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
 			cach: false,
 			success: function(data) {
 				this.setState({data: data});

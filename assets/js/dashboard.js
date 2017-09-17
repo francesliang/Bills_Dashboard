@@ -1,5 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var DjangoCSRFToken = require('django-react-csrftoken')
 //var LinkedStateMixin = require('react-addons-linked-state-mixin')
 var d3 = require("d3");
 
@@ -10,7 +11,6 @@ var BillSelect = React.createClass({
 		$.ajax({
 			url: this.props.loadUrl,
 			datatype: 'json',
-			data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
 			cach: false,
 			success: function(data) {
 				this.setState({existing_bills: data});
@@ -132,7 +132,7 @@ var BillOverview = React.createClass({
 			url: this.props.url,
 			datatype: 'json',
 			cach: false,
-			data: {'bill_name': this.props.bill_name, csrfmiddlewaretoken: '{{ csrf_token }}'},
+			data: {'bill_name': this.props.bill_name},
 			success: function(data) {
 				this.setState({data: data});
 			}.bind(this),
@@ -205,7 +205,7 @@ var BillHistory = React.createClass({
 			url: this.props.url,
 			datatype: 'json',
 			cach: false,
-			data: {'bill_name': this.props.bill_name, csrfmiddlewaretoken: '{{ csrf_token }}'},
+			data: {'bill_name': this.props.bill_name},
 			success: function(data) {
 				this.setState({data: data});
 			}.bind(this),
