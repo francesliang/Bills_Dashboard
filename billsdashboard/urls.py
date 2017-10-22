@@ -17,6 +17,9 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from registration.backends.simple.views import RegistrationView
+from django.conf.urls.static import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.conf import settings
 
 from dashboard.forms import BillsRegistrationForm
 from dashboard import views
@@ -28,11 +31,12 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.default, name='default'),
     #url(r'^get_bill_detail', views.get_bill_detail, name='get_bill_detail'),
-    url(r'^insert_bill', views.insert_bill, name='insert_bill'),   
-    url(r'^list_bills', views.list_bills, name='list_bills'), 
+    url(r'^insert_bill', views.insert_bill, name='insert_bill'),
+    url(r'^list_bills', views.list_bills, name='list_bills'),
     url(r'^get_last_bills', views.get_last_bills, name='get_last_bills'),
     url(r'^get_bills_summary', views.get_bills_summary, name='get_bills_summary'),
     url(r'^dashboard', views.dashboard, name='dashboard'),
     url(r'^get_bill_overview', views.get_bill_overview, name='get_bill_overview'),
     url(r'^get_bill_history', views.get_bill_history, name='get_bill_history'),
 ]
+urlpatterns += staticfiles_urlpatterns()
