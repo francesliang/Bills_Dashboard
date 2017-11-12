@@ -22,10 +22,10 @@ def dashboard(request):
     return render(request, 'dashboard.html')
 
 @login_required
-@ensure_csrf_cookie
+@csrf_exempt
 def insert_bill(request):
     params = request.POST
-    print 'insert bill params', params
+    print ('insert bill params', params)
     created_date = params.get('created_date')
     bill_name = params.get('bill_name')
     due_date = params.get('due_date')
@@ -37,7 +37,7 @@ def insert_bill(request):
         name=bill_name,
         due_date=due_date,
         amount=amount)
-    print "insert_bill ", bill_name, due_date, amount
+    print ("insert_bill ", bill_name, due_date, amount)
 
     return HttpResponse(json.dumps({'success': is_created}), content_type="application/json")
 
@@ -62,7 +62,7 @@ def get_last_bills(request):
                 'due_date': last_b.due_date.strftime('%Y-%m-%d')
             }
 
-    print 'last bills', data
+    print ('last bills', data)
     return HttpResponse(json.dumps(data), content_type="application/json")
 
 @login_required
@@ -76,7 +76,7 @@ def get_bills_summary(request):
         percent = sum(bill.values_list('amount', flat=True))/float(total) * 100
         data[b] = round(percent, 1)
 
-    print 'bills summary', data
+    print ('bills summary', data)
     return HttpResponse(json.dumps(data), content_type="application/json")
 
 @login_required
@@ -97,7 +97,7 @@ def get_bill_overview(request):
         "due_dates": dates,
         "amounts": amounts
     }
-    print 'bill overview', data
+    print ('bill overview', data)
 
     return HttpResponse(json.dumps(data), content_type="application/json")
 

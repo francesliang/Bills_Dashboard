@@ -47,25 +47,25 @@ var BillForm = React.createClass({
 		this.setState({
 			[name]: value
 		});
-
-		console.log('input', this.state)
 	},
 
 	handleSubmit: function(event) {
-		alert('A bill was submitted: ' + this.state.bill_name);
 		var post_data = this.state;
-		past_data.csrfmiddlewaretoken = DjangoCSRFToken;
+		//past_data.csrfmiddlewaretoken = DjangoCSRFToken;
 		//event.preventDefault();
-		$.ajax({
+        $.ajax({
 			url: this.props.postUrl,
 			datatype: 'json',
 			type: 'POST',
-			data: post_data,
-			cach: false,
+			data: this.state,
 			success: function(data) {
 				console.log('submit succeeded', data);
+			},
+			error: function(xhr, ajaxOptions, thrownError){
+			    alert(xhr.responseText);
 			}
 		})
+		alert('A bill was submitted: ' + this.state.bill_name);
 	},
 
 	onClick: function(e) {
