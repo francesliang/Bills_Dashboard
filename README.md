@@ -10,15 +10,14 @@ source venv/bin/activate
 
 2. Install package requirements
 ```
-pip install django
-pip install djangorestframework
-pip install django-webpack-loader
+cd ~/<root directory of your Django project>
+pip install -r requirements.txt
 ```
 
 ```
 cd ~/<root directory of your Django project>
-npm init
-npm install --save-dev jquery react react-dom webpack webpack-bundle-tracker babel-loader babel-core babel-preset-es2015 babel-preset-react
-npm install --save-dev d3
+<install node.js>
+npm install 
+npm run build
 ```
 
