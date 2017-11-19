@@ -14,6 +14,8 @@ import os
 import json
 
 import django
+from datetime import timedelta
+from .celery import crontab
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,14 +28,15 @@ THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = 'm)0-#o#3$ys%9v4rs(ivq8ai!vmhrd565zr7$bz!2scl4*kg_h'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
 LOGIN_REDIRECT_URL = "/"
 
 CONFIG = json.load(open(os.path.join(THIS_DIR, 'config.json'), 'r'))
 
+SILKY_PYTHON_PROFILER = True
 
 # Application definition
 
@@ -49,6 +52,7 @@ INSTALLED_APPS = [
     'webpack_loader',
     'django_celery_beat',
     'django_extensions',
+    'silk',
 ]
 
 MIDDLEWARE = [
@@ -59,6 +63,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'silk.middleware.SilkyMiddleware',
 ]
 
 ROOT_URLCONF = 'billsdashboard.urls'
@@ -147,5 +152,23 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = CONFIG.get('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = CONFIG.get('EMAIL_HOST_PASSWORD', '')
+
+# Celery
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_TIMEZONE = 'Australia/Brisbane'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_BEAT_SCHEDULE = {
+    'every-day':{
+        'task': 'dashboard.tasks.check_bill_duedate',
+        'schedule': crontab(hour=8),
+        #'schedule': timedelta(seconds=10),
+        #'args': (("test celery",)),
+
+    },
+}
+
+#CELERY_BEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
 django.setup()

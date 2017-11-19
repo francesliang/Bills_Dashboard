@@ -6,26 +6,29 @@ from dashboard.models import Bills
 from dashboard.admin import email_alert
 
 
-def check_duedate(to_email_list, bill_name=None, alert_days=3):
+def check_duedate(user, bill_name=None, alert_days=7):
     today = datetime.today()
 
     msg_base = "Bill %s is due on %s."
     from_email = ""
 
+    bills_obj = Bills.objects.filter(owner=user)
     if bill_name is None:
-        bills = Bills.objects.all().values_list('name', flat=True)
+        bills = bills_obj.values_list('name', flat=True)
         bills = list(set(bills))
     else:
         bills = [bill_name]
 
+    print bills
     for bill in bills:
         duedates = Bills.objects.filter(name=bill).order_by('-due_date')
         duedate = duedates[0].due_date.replace(tzinfo=None)
+        print duedate
         time_delta = duedate - today
-        if 0 < time_delta.days <= alert_days:
+        if 0 <= time_delta.days <= alert_days:
             msg = msg_base % (bill, duedate.strftime('%Y-%m-%d'))
             print 'check due date msg', msg
-            email_alert(msg, from_email, to_email_list)
+            email_alert(msg, from_email, [user.email])
 
 
 class Command(BaseCommand):
