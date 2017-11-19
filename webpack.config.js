@@ -59,6 +59,10 @@ module.exports = {
 		extensions: ['', '.js', '.jsx']
 	},
 
+	externals:[{
+    xmlhttprequest: '{XMLHttpRequest:XMLHttpRequest}'
+    }]
+
 	//watch: true
 }
 
