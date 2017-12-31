@@ -30,11 +30,11 @@ SECRET_KEY = 'm)0-#o#3$ys%9v4rs(ivq8ai!vmhrd565zr7$bz!2scl4*kg_h'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['*']
 
 LOGIN_REDIRECT_URL = "/"
 
-CONFIG = json.load(open(os.path.join(THIS_DIR, 'config.json'), 'r'))
+CONFIG = json.load(open(os.path.join(BASE_DIR, 'config.json'), 'r'))
 
 SILKY_PYTHON_PROFILER = True
 
@@ -135,6 +135,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'dashboard/static')
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'assets'),

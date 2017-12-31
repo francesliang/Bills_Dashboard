@@ -39,4 +39,5 @@ urlpatterns = [
     url(r'^get_bill_overview', views.get_bill_overview, name='get_bill_overview'),
     url(r'^get_bill_history', views.get_bill_history, name='get_bill_history'),
 ]
+urlpatterns += [url(r'^silk/', include('silk.urls', namespace='silk'))]
 urlpatterns += staticfiles_urlpatterns()
