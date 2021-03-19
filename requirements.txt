@@ -14,7 +14,7 @@ django-extensions==1.8.1
 django-registration==2.2
 django-silk==1.0.0
 django-webpack-loader==0.4.1
-djangorestframework==3.6.2
+djangorestframework==3.11.2
 docopt==0.6.2
 enum34==1.1.6
 gunicorn==19.7.1
